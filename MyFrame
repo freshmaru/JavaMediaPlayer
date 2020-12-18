@@ -1,0 +1,140 @@
+/*
+ * MyFrame.java
+ * 단어장의 기능을 구현한 Class
+ * 
+ * 작성자 오기탁
+ * MyFrame(): 단어장 프로그램의 초기 디자인입니다
+ * 왼쪽 영단어와 해석 창에 단어를 입력하고 엔터를 누르면 리스트에 추가되는 형태입니다
+*/
+import javax.swing.*;
+import java.awt.event.*;
+import java.awt.*;
+import java.util.*;
+import javax.swing.border.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.event.ListSelectionListener;
+
+
+public class MyFrame extends JFrame {
+	
+	Vector<String> v = new Vector<String>();				//vector for saving text
+	JList<String> ENGLISH_WORD = new JList<String>(v);
+	Vector<String> v1 = new Vector<String>();
+	JList<String> KOREAN_WORD = new JList<String>(v1);
+	
+	private JPanel main, p1, p2;
+	JTextField tf1 = new JTextField(20);
+	JTextField tf2 = new JTextField(20);
+	JTextArea te = new JTextArea(7, 20);
+	JTextArea tk = new JTextArea(7, 20);
+	JLabel lb1 = new JLabel("단어 추가");
+	JLabel eng_word = new JLabel("영단어", JLabel.LEFT);
+	JLabel kor_word = new JLabel("해석", JLabel.LEFT);
+	JTextField quiz = new JTextField(20);
+	JTextField test = new JTextField(20);
+	JButton solveBtn = new JButton("확인");
+	JButton nxtBtn = new JButton("다음");
+	
+	JPanel mainPanel, subPanel1, subPanel1_1, subPanel1_2, subPanel2, subPanel3, subPanel4;
+	
+	public MyFrame() {
+		setTitle("단어장");
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		mainPanel = new JPanel();
+    	mainPanel.setLayout(new GridLayout(1,2, 3, 3));
+    	
+    	subPanel1 = new JPanel();
+    	
+    	subPanel1.setLayout(new GridLayout(2,1));
+    	
+    	subPanel2 = new JPanel();
+    	subPanel2.setLayout(new GridLayout(1,2));
+    	
+    	//Constructing JPanel 1_1
+    	subPanel1_1 = new JPanel();
+    	subPanel1_1.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(),("단어 추가")));
+    	subPanel1_1.setLayout(new GridBagLayout());
+    	GridBagConstraints constraints = new GridBagConstraints();
+        constraints.anchor = GridBagConstraints.WEST;
+        constraints.insets = new Insets(10, 10, 10, 10);
+    	
+        constraints.gridx = 0;
+        constraints.gridy = 0;
+        subPanel1_1.add(new JLabel("입력 후 <Enter> 키"), constraints);
+        constraints.gridx = 0;
+        constraints.gridy = 1;
+    	subPanel1_1.add(eng_word, constraints);
+    	constraints.gridx = 1;
+    	subPanel1_1.add(tf1, constraints);
+    	constraints.gridx = 0;
+        constraints.gridy = 2;
+    	subPanel1_1.add(kor_word, constraints);
+    	constraints.gridx = 1;
+    	subPanel1_1.add(tf2, constraints);
+    	constraints.gridx = 0;
+        constraints.gridy = 3;
+        constraints.gridwidth = 2;
+    	
+        //constructing JPanel 3
+    	subPanel3 = new JPanel();
+    	subPanel3.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(),("영단어")));
+    	//add scroll to list
+    	subPanel3.add(new JScrollPane(ENGLISH_WORD));
+    	subPanel3.setLayout(new GridLayout(1,1));
+    	
+    	//constructing JPanel 4
+    	subPanel4 = new JPanel();
+    	subPanel4.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(),("해석")));
+    	subPanel4.add(new JScrollPane(KOREAN_WORD));
+    	subPanel4.setLayout(new GridLayout(1,1));
+    	
+    	//Adding word to JList
+    	tf1.addActionListener(new ActionListener() {
+    		public void actionPerformed(ActionEvent e) {
+    		JTextField t = (JTextField)e.getSource();
+    		v.add(t.getText());
+    		t.setText("");
+    		ENGLISH_WORD.setListData(v);
+    		}
+    	});
+    	
+    	tf2.addActionListener(new ActionListener() {
+    		public void actionPerformed(ActionEvent e) {
+    		JTextField t1 = (JTextField)e.getSource();
+    		v1.add(t1.getText());
+    		t1.setText("");
+    		KOREAN_WORD.setListData(v1);
+    		}
+    		});
+    	  	
+    	//Adding JPanel 1_1, 1_2 to JPanel 1
+    	subPanel1.add(subPanel1_1);
+    	//subPanel1.add(subPanel1_2);
+    	
+    	//Adding JPanel 3, 4 to JPanel 2
+    	subPanel2.add(subPanel3);
+    	subPanel2.add(subPanel4);
+    	
+    	//Adding JPanel 1 and 2 to main JPanel
+    	mainPanel.add(subPanel1);
+    	mainPanel.add(subPanel2);
+
+    	//Setting up the container ready for the components to be added.
+    	Container pane = getContentPane();
+    	setContentPane(pane);
+		
+		//Adding the main JPanel to the container
+    	pane.add(mainPanel);
+		
+		setSize(780, 480);
+		setVisible(true);	
+}
+	
+	
+	public static void main(String[] args) {
+		new MyFrame();
+}
+}
